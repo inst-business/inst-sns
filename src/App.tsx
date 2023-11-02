@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
-import { ThemeProvider } from './contexts/ThemeProvider'
+import { Toaster } from '@/components/ui/toaster'
+import { ThemeProvider } from '@/contexts/ThemeProvider'
 import { RoutesPublic, RoutesAuth, RoutesPrivate } from '@/routes'
 import NotFound from '@/pages/NotFound'
 
@@ -12,6 +13,7 @@ const App = () => {
         {RoutesPrivate}
         <Route path={'*'} element={<NotFound />} />
       </Routes>
+      <Toaster />
     </ThemeProvider>
   )
 }
