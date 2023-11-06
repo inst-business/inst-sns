@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { SignupValidation } from '@/lib/validation/auth'
+import { signupValidation } from '@/lib/validation/auth'
 import Loader from '@/components/shared/Loader'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { useCreateUserAccount, useLogInAccount } from '@/hooks/queriesAndMutations'
@@ -22,8 +22,8 @@ const Signup = ({}) => {
   const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount()
   const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLogInAccount()
 
-  const form = useForm<z.infer<typeof SignupValidation>>({
-    resolver: zodResolver(SignupValidation),
+  const form = useForm<z.infer<typeof signupValidation>>({
+    resolver: zodResolver(signupValidation),
     defaultValues: {
       name: '',
       username: '',
@@ -32,7 +32,7 @@ const Signup = ({}) => {
     }
   })
 
-  const handleSubmit = async (data: z.infer<typeof SignupValidation>) => {
+  const handleSubmit = async (data: z.infer<typeof signupValidation>) => {
     const user = await createUserAccount(data)
     if (!user) return toast({
       title: 'Sign up failed, please try again.',
