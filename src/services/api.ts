@@ -55,19 +55,6 @@ const saveUserToDB = async (user: {
 }
 
 
-const logInAccount = async (user: Pick<IAccount, 'email' | 'password'>) => {
-  try {
-    const { email, password } = user
-    const session = await account.createEmailSession(email, password)
-    return session
-  }
-  catch (e) {
-    console.error(e)
-    return e
-  }
-}
-
-
 const getCurrentUser = async () => {
   try {
     const currentAccount = await account.get()
@@ -90,8 +77,34 @@ const getCurrentUser = async () => {
 }
 
 
+const loginAccount = async (user: Pick<IAccount, 'email' | 'password'>) => {
+  try {
+    const { email, password } = user
+    const session = await account.createEmailSession(email, password)
+    return session
+  }
+  catch (e) {
+    console.error(e)
+    return e
+  }
+}
+
+
+const logoutAccount = async () => {
+  try {
+    const session = await account.deleteSession('current')
+    return session
+  }
+  catch (e) {
+    console.error(e)
+    return e
+  }
+}
+
+
 export {
   createUserAccount,
-  logInAccount,
-  getCurrentUser
+  getCurrentUser,
+  loginAccount,
+  logoutAccount,
 }

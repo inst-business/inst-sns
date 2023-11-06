@@ -7,9 +7,9 @@ import HeaderMenu from './Header.Menu'
 const Header: FC<PropsWithChildren> = ({}) => {
   return (
     <>
-      {/* <HeaderBrand />
+      <HeaderBrand />
       <HeaderSearch />
-      <HeaderMenu /> */}
+      <HeaderMenu />
     </>
   )
 }

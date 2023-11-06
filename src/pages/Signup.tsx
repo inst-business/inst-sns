@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { signupValidation } from '@/lib/validation/auth'
 import Loader from '@/components/shared/Loader'
 import { useAuthContext } from '@/contexts/AuthContext'
-import { useCreateUserAccount, useLogInAccount } from '@/hooks/queriesAndMutations'
+import { useCreateUserAccount, useLoginAccount } from '@/hooks/queriesAndMutations'
 
 const Signup = ({}) => {
 
@@ -20,7 +20,7 @@ const Signup = ({}) => {
   const { checkAuthUser, isLoading: isUserLoading } = useAuthContext()
 
   const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount()
-  const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLogInAccount()
+  const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLoginAccount()
 
   const form = useForm<z.infer<typeof signupValidation>>({
     resolver: zodResolver(signupValidation),

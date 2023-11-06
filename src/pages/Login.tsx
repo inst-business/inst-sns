@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { loginValidation } from '@/lib/validation/auth'
 import Loader from '@/components/shared/Loader'
 import { useAuthContext } from '@/contexts/AuthContext'
-import { useLogInAccount } from '@/hooks/queriesAndMutations'
+import { useLoginAccount } from '@/hooks/queriesAndMutations'
 
 const Login = ({}) => {
 
@@ -19,7 +19,7 @@ const Login = ({}) => {
   const { toast } = useToast()
   const { checkAuthUser, isLoading: isUserLoading } = useAuthContext()
 
-  const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLogInAccount()
+  const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLoginAccount()
 
   const form = useForm<z.infer<typeof loginValidation>>({
     resolver: zodResolver(loginValidation),
