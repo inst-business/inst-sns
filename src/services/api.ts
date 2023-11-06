@@ -1,8 +1,9 @@
-import { ID } from 'appwrite'
+import { ID, Models, Query } from 'appwrite'
 import { account, appwriteConfig, avatars, databases } from '@/lib/server/config'
-import { INewUser } from '@/types/user'
+import { IAccount, IUser } from '@/types/user'
 
-const createUserAccount = async (user: INewUser) => {
+
+const createUserAccount = async (user: IAccount) => {
   try {
     const newAccount = await account.create(
       ID.unique(),
@@ -29,6 +30,7 @@ const createUserAccount = async (user: INewUser) => {
   }
 }
 
+
 const saveUserToDB = async (user: {
   accountId: string
   email: string
@@ -52,6 +54,44 @@ const saveUserToDB = async (user: {
   }
 }
 
+
+const logInAccount = async (user: Pick<IAccount, 'email' | 'password'>) => {
+  try {
+    const { email, password } = user
+    const session = await account.createEmailSession(email, password)
+    return session
+  }
+  catch (e) {
+    console.error(e)
+    return e
+  }
+}
+
+
+const getCurrentUser = async () => {
+  try {
+    const currentAccount = await account.get()
+    if (!currentAccount) throw Error
+    
+    const { databaseId, usersCollectionId } = appwriteConfig
+    const currentUser: Models.DocumentList<Models.Document & IUser> = await databases.listDocuments(
+      databaseId,
+      usersCollectionId,
+      [Query.equal('accountId', currentAccount.$id)],
+    )
+    if (!currentUser) throw Error
+
+    return currentUser.documents[0]
+  }
+  catch (e) {
+    console.error(e)
+    // return e
+  }
+}
+
+
 export {
-  createUserAccount
+  createUserAccount,
+  logInAccount,
+  getCurrentUser
 }

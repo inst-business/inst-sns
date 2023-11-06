@@ -4,13 +4,21 @@ import Layout from '@/layouts'
 import Login from '@/pages/Login'
 import Signup from '@/pages/Signup'
 
-const routes: TRoute[] = [
-  { path: '/login', component: Login },
-  { path: '/signup', component: Signup },
-]
+const AUTH_ROUTE: Record<Uppercase<string>, TRoute> = {
+  LOGIN: { path: '/login', component: Login },
+  SIGNUP: { path: '/signup', component: Signup },
+} as const
+
+// const AUTH_PATH: AuthPathObject = Object.keys(AUTH_ROUTE).reduce((acc, key) => {
+//   const routeKey = key as keyof typeof AUTH_ROUTE
+//   acc[routeKey] = AUTH_ROUTE[routeKey].path
+//   return acc
+// }, {} as AuthPathObject)
+
+// AUTH_PATH.LOGIN
 
 const RoutesAuth = (
-  () => routes.map((route, index) => {
+  () => Object.values(AUTH_ROUTE).map((route, index) => {
     const isAuthenticated = false
     // let Layout: any = Fragment
     // if (route.layout !== null) Layout = route.layout || Default

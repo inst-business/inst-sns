@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,13 +10,17 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { SignupValidation } from '@/lib/validation/auth'
 import Loader from '@/components/shared/Loader'
-import { useCreateUserAccount } from '@/hooks/queriesAndMutations'
+import { useAuthContext } from '@/contexts/AuthContext'
+import { useCreateUserAccount, useLogInAccount } from '@/hooks/queriesAndMutations'
 
 const Signup = ({}) => {
 
+  const navigate = useNavigate()
   const { toast } = useToast()
+  const { checkAuthUser, isLoading: isUserLoading } = useAuthContext()
 
-  const { mutateAsync: createUserAccount, isPending } = useCreateUserAccount()
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount()
+  const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLogInAccount()
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -33,7 +37,18 @@ const Signup = ({}) => {
     if (!user) return toast({
       title: 'Sign up failed, please try again.',
     })
-    console.log(user)
+    // console.log(user)
+    const session = await logInAccount(data)
+    if (!session) return toast({
+      title: 'Log in failed, please try again.',
+    })
+
+    const isLoggedIn = await checkAuthUser()
+    if (!isLoggedIn) return toast({
+      title: 'Sign up failed, please try again.',
+    })
+    form.reset()
+    navigate('/')
   }
 
   return (
@@ -100,7 +115,7 @@ const Signup = ({}) => {
             )}
           />
           <Button type={'submit'} className={'shad-button_primary'}>
-            {isPending ? (
+            {isCreatingAccount ? (
               <div className={'flex-center gap-2'}>
                 <Loader />
               </div>

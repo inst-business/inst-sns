@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react'
 // import './styles/global.scss'
-import { useTheme } from '@/contexts/ThemeProvider'
+import { useTheme } from '@/contexts/ThemeContext'
 import Main from './partials/Main'
 
 const LayoutNoPartials: FC<PropsWithChildren> = ({ children }) => {

@@ -1,4 +1,11 @@
 
+export interface IAccount {
+  name: string
+  email: string
+  username: string
+  password: string
+}
+
 export interface IUser {
   id: string
   name: string
@@ -6,13 +13,6 @@ export interface IUser {
   email: string
   imageUrl: string
   bio: string
-}
-
-export interface INewUser {
-  name: string
-  email: string
-  username: string
-  password: string
 }
 
 export interface IUpdateUser {
