@@ -1,5 +1,5 @@
 import { Navigate, Route } from 'react-router-dom'
-import { TRoute } from './routes'
+import { TRoute } from '@/types/ui'
 import Layout from '@/layouts'
 import Login from '@/pages/Login'
 import Signup from '@/pages/Signup'

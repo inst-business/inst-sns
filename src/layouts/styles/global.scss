@@ -280,13 +280,13 @@
     @apply absolute bottom-0 p-5 flex-between w-full bg-gradient-to-t from-dark-3 to-transparent rounded-b-[24px] gap-2;
   }
 
-  /* Left sidebar */
-  .leftsidebar {
+  /* Sidebar */
+  .sidebar {
     @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-dark-2;
   }
 
-  .leftsidebar-link {
-    @apply rounded-lg base-medium hover:bg-primary-500 transition;
+  .sidebar-link {
+    @apply rounded-lg base-medium hover:bg-dark-4 transition;
   }
 
   /* Post Card */
@@ -298,8 +298,8 @@
     @apply h-64 xs:h-[400px] lg:h-[450px] w-full rounded-[24px] object-cover mb-5;
   }
 
-  /* Topbar */
-  .topbar {
+  /* Header */
+  .header {
     @apply sticky top-0 z-50 md:hidden bg-dark-2 w-full;
   }
 

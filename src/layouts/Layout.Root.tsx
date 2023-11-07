@@ -10,12 +10,12 @@ const LayoutRoot: FC<PropsWithChildren> = ({ children }) => {
   // const darkTheme = useTheme()
 
   return (
-    <div className={'w-full md:flex'}>
+    <div className={'w-full md:flex'} style={{ height: '100vh' }}>
       <Header />
       <Sidebar />
-      <section className={'flex flex-1 h-full'}>
+      <main className={'flex flex-1 h-full'}>
         {children}
-      </section>
+      </main>
       <Footer />
     </div>
   )

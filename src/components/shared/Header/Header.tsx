@@ -31,12 +31,11 @@ const Header = ({}) => {
             <Icon asset={'logout'} />
           </Button>
           <Link to={`/profile/${user.id}`} className={'flex-center gap-3'}>
-          <Icon asset={'circle-user'} className={'shad-button_dark_4 hover:!bg-dark-4'} />
-            {/* {
+            {
               user.imageUrl != null
-                ? <img src={user.imageUrl} alt={user.username} />
+                ? <img src={user.imageUrl} alt={user.username} className={'h-8 w-8 rounded-full'} />
                 : <Icon asset={'circle-user'} />
-            } */}
+            }
           </Link>
         </div>
       </div>

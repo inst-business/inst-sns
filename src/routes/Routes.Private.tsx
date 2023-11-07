@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom'
-import { TRoute } from './routes'
+import { TRoute } from '@/types/ui'
 import Layout from '@/layouts'
 import Admin from '@/pages/Admin'
 

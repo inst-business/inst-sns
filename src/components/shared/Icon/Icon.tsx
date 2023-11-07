@@ -23,8 +23,8 @@ import styles from './icon.module.scss'
 interface IIconProps {
   asset: string
   color?: string
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
   className?: string
   props?: unknown[]
 }
@@ -33,18 +33,21 @@ const Icon: FC<IIconProps> = ({
   asset, color, width = 24, height = 24, className, ...props
 }) => {
   const maskImage = `url('/public/assets/${asset.toLowerCase()}.svg')`
+  const dimension = (edge: number | string) => typeof edge === 'number' ? `${edge}px` : edge as string
   return (
     <span
-      className={clsx(className, 'shad-button_primary', styles.Icon)}
-      ref={
-        el => el && el.style.setProperty('background-color', color as string, 'important')
-      }
+      className={clsx('bg-gray-500 hover:!bg-gray-500', styles.Icon, className)}
       style={{
         maskImage,
         WebkitMaskImage: maskImage,
-        width,
-        height,
       }}
+      ref={
+        el => {
+          el?.style.setProperty('background-color', color as string, 'important')
+          el?.style.setProperty('width', dimension(width), 'important')
+          el?.style.setProperty('height', dimension(height), 'important')
+        }
+      }
       {...props}
     ></span>
   )
