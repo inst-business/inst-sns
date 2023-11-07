@@ -2,7 +2,7 @@
 export interface INewPost {
   userId: string
   caption: string
-  file: File[]
+  files: File[]
   location?: string
   tags?: string
 }
@@ -12,7 +12,7 @@ export interface IUpdatePost {
   caption: string
   imageId: string
   imageUrl: URL
-  file: File[]
+  files: File[]
   location?: string
   tags?: string
 }

@@ -5,7 +5,7 @@ const Icon = new Proxy(
     get: (target, name: string) => ({ size = 'md', width = 24, height = 24, ...props }) => {
       const sizes = { sm: 16, md: 32, lg: 48 }
       return <img
-        src={`/public/assets/${name.toLowerCase()}.svg`}
+        src={`/assets/${name.toLowerCase()}.svg`}
         alt={name}
         width={width}
         height={height}

@@ -11,4 +11,5 @@ export type TNavLink = {
   activeIcon: string
   route: string
   label: string
+  mobileDisabled?: boolean
 }

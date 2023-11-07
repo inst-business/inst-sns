@@ -249,21 +249,22 @@
     @apply flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar;
   }
 
-  /* Bottom bar */
-  .bottom-bar {
+  /* Navigation bar */
+  .navigationbar {
     @apply z-50 flex-between w-full sticky bottom-0 rounded-t-[20px] bg-dark-2 px-5 py-4 md:hidden;
   }
 
-  /* File uploader */
-  .file_uploader-img {
-    @apply h-80 lg:h-[480px] w-full rounded-[24px] object-cover object-top;
+  /* uploader */
+  .uploader-img {
+    // @apply h-80 lg:h-[480px] w-full rounded-[24px] object-cover object-top;
+    @apply w-full rounded-xl object-cover object-top;
   }
 
-  .file_uploader-label {
+  .uploader-label {
     @apply text-light-4 text-center small-regular w-full p-4 border-t border-t-dark-4;
   }
 
-  .file_uploader-box {
+  .uploader-box {
     @apply flex-center flex-col p-7 h-80 lg:h-[612px];
   }
 

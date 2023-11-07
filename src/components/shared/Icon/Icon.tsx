@@ -4,7 +4,7 @@ import styles from './icon.module.scss'
 
 // const render = (name: string, width?: number, height?: number, ...props: any[]) => {
 //   return <img
-//     src={`/public/assets/${name.toLowerCase()}.svg`}
+//     src={`/assets/${name.toLowerCase()}.svg`}
 //     alt={name}
 //     width={width}
 //     height={height}
@@ -32,7 +32,7 @@ interface IIconProps {
 const Icon: FC<IIconProps> = ({
   asset, color, width = 24, height = 24, className, ...props
 }) => {
-  const maskImage = `url('/public/assets/${asset.toLowerCase()}.svg')`
+  const maskImage = `url('/assets/${asset.toLowerCase()}.svg')`
   const dimension = (edge: number | string) => typeof edge === 'number' ? `${edge}px` : edge as string
   return (
     <span

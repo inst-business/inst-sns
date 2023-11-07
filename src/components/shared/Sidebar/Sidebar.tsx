@@ -3,44 +3,11 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import clsx from 'clsx'
 import { Button } from '@/components/ui/button'
 import Icon from '@/components/shared/Icon'
+import { navigationLinks } from '@/config/global'
 import { useLogOutAccount } from '@/hooks/queriesAndMutations'
 import { useAuthContext } from '@/contexts/AuthContext'
-import { TNavLink } from '@/types/ui'
 
-const links: TNavLink[] = [
-  {
-    icon: 'house-blank',
-    activeIcon: 'house-blank_filled',
-    route: '/',
-    label: 'Home',
-  },
-  {
-    icon: 'compass',
-    activeIcon: 'compass_filled',
-    route: '/explore',
-    label: 'Explore',
-  },
-  {
-    icon: 'user-group',
-    activeIcon: 'user-group_filled',
-    route: '/all-users',
-    label: 'People',
-  },
-  {
-    icon: 'bookmark',
-    activeIcon: 'bookmark_filled',
-    route: '/saved',
-    label: 'Saved',
-  },
-  {
-    icon: 'square-plus',
-    activeIcon: 'square-plus_filled',
-    route: '/create',
-    label: 'Create',
-  },
-]
-
-const Sidebar = ({}) => {
+const SideBar = ({}) => {
 
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -71,7 +38,7 @@ const Sidebar = ({}) => {
         </Link>
 
         <ul className={'flex flex-col gap-6'}>
-          {links.map(link => {
+          {navigationLinks.map(link => {
             const isActive = link.route === pathname
             return (
               <li
@@ -111,4 +78,4 @@ const Sidebar = ({}) => {
   )
 }
 
-export default Sidebar
+export default SideBar

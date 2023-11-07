@@ -1,6 +1,7 @@
 import { ID, Models, Query } from 'appwrite'
-import { account, appwriteConfig, avatars, databases } from '@/lib/server/config'
+import { account, appwriteConfig, avatars, databases, storage } from '@/lib/server/config'
 import { IAccount, IUser } from '@/types/user'
+import { INewPost } from '@/types/post'
 
 
 const createUserAccount = async (user: IAccount) => {
@@ -54,12 +55,10 @@ const saveUserToDB = async (user: {
   }
 }
 
-
 const getCurrentUser = async () => {
   try {
     const currentAccount = await account.get()
     if (!currentAccount) throw Error
-    
     const { databaseId, usersCollectionId } = appwriteConfig
     const currentUser: Models.DocumentList<Models.Document & IUser> = await databases.listDocuments(
       databaseId,
@@ -67,7 +66,6 @@ const getCurrentUser = async () => {
       [Query.equal('accountId', currentAccount.$id)],
     )
     if (!currentUser) throw Error
-
     return currentUser.documents[0]
   }
   catch (e) {
@@ -102,9 +100,97 @@ const logoutAccount = async () => {
 }
 
 
+const uploadFile = async (file: File) => {
+  try {
+    const { storageId } = appwriteConfig
+    const uploadedFile = await storage.createFile(
+      storageId,
+      ID.unique(),
+      file,
+    )
+    return uploadedFile
+  }
+  catch (e) {
+    console.error(e)
+    // return e
+  }
+}
+
+const deleteFile = async (fileId: string) => {
+  try {
+    const { storageId } = appwriteConfig
+    await storage.deleteFile(
+      storageId,
+      fileId,
+    )
+    return { status: 'ok' }
+  }
+  catch (e) {
+    console.error(e)
+    // return e
+  }
+}
+
+const getFilePreview = async (fileId: string) => {
+  try {
+    const { storageId } = appwriteConfig
+    const fileUrl = await storage.getFilePreview(
+      storageId,
+      fileId,
+      2000,
+      2000,
+      'top',
+      100,
+    )
+    return fileUrl
+  }
+  catch (e) {
+    console.error(e)
+    return e
+  }
+}
+
+const createPost = async (post: INewPost) => {
+  try {
+    const uploadedFile = await uploadFile(post.files[0])
+    if (!uploadedFile) throw Error
+    const fileUrl = getFilePreview(uploadedFile.$id)
+    if (!fileUrl) {
+      deleteFile(uploadedFile.$id)
+      throw Error
+    }
+    const tags = post.tags?.replace(/ /g, '').split(',') || []
+    const { databaseId, postsCollectionId } = appwriteConfig
+    const newPost = await databases.createDocument(
+      databaseId,
+      postsCollectionId,
+      ID.unique(),
+      {
+        creator: post.userId,
+        caption: post.caption,
+        imageUrl: fileUrl,
+        imageId: uploadedFile.$id,
+        location: post.location,
+        tags,
+      }
+    )
+    if (!newPost) {
+      deleteFile(uploadedFile.$id)
+      throw Error
+    }
+    return newPost
+  }
+  catch (e) {
+    console.error(e)
+    return e
+  }
+}
+
+
 export {
   createUserAccount,
   getCurrentUser,
   loginAccount,
   logoutAccount,
+  createPost,
 }
