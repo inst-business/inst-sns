@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, ButtonHTMLAttributes } from 'react'
 import clsx from 'clsx'
 import styles from './icon.module.scss'
 
@@ -29,7 +29,7 @@ interface IIconProps {
   props?: unknown[]
 }
 
-const Icon: FC<IIconProps> = ({
+const Icon: FC<IIconProps & ButtonHTMLAttributes<HTMLButtonElement>> = ({
   asset, color, width = 24, height = 24, className, ...props
 }) => {
   const maskImage = `url('/assets/${asset.toLowerCase()}.svg')`

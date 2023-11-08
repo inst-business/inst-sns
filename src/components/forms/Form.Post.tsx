@@ -17,7 +17,7 @@ import { postValidation } from '@/lib/validation/post'
 import { useCreatePost } from '@/hooks/queriesAndMutations'
 
 interface IFormPostProps {
-  post: Models.Document
+  post?: Models.Document
 }
 
 const FormPost: FC<IFormPostProps> = ({ post }) => {

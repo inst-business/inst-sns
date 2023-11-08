@@ -1,3 +1,16 @@
+import { Models } from 'appwrite'
+import { IUserDocument } from './user'
+
+export interface IPostDocument extends Models.Document {
+  creator: IUserDocument
+  caption: string
+  tags: string[]
+  imageId: string
+  imageUrl: URL
+  location?: string
+  // likes: 
+  // save: 
+}
 
 export interface INewPost {
   userId: string

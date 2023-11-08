@@ -131,10 +131,10 @@ const deleteFile = async (fileId: string) => {
   }
 }
 
-const getFilePreview = async (fileId: string) => {
+const getFilePreview = (fileId: string) => {
   try {
     const { storageId } = appwriteConfig
-    const fileUrl = await storage.getFilePreview(
+    const fileUrl = storage.getFilePreview(
       storageId,
       fileId,
       2000,
@@ -187,10 +187,23 @@ const createPost = async (post: INewPost) => {
 }
 
 
+const getRecentPosts = async () => {
+  const { databaseId, postsCollectionId } = appwriteConfig
+  const posts = await databases.listDocuments(
+    databaseId,
+    postsCollectionId,
+    [Query.orderDesc('$createdAt'), Query.limit(20)]
+  )
+  if (!posts) throw Error
+  return posts
+}
+
+
 export {
   createUserAccount,
   getCurrentUser,
   loginAccount,
   logoutAccount,
   createPost,
+  getRecentPosts,
 }

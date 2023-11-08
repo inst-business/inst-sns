@@ -1,3 +1,4 @@
+import { Models } from 'appwrite'
 
 export interface IAccount {
   name: string
@@ -14,6 +15,8 @@ export interface IUser {
   imageUrl: string
   bio: string
 }
+
+export type IUserDocument = IUser & Models.Document
 
 export interface IUpdateUser {
   userId: string
