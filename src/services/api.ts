@@ -1,6 +1,6 @@
 import { ID, Models, Query } from 'appwrite'
 import { account, appwriteConfig, avatars, databases, storage } from '@/lib/server/config'
-import { IAccount, IUser } from '@/types/user'
+import { IAccount, IUserDocument } from '@/types/user'
 import { INewPost } from '@/types/post'
 
 
@@ -60,7 +60,7 @@ const getCurrentUser = async () => {
     const currentAccount = await account.get()
     if (!currentAccount) throw Error
     const { databaseId, usersCollectionId } = appwriteConfig
-    const currentUser: Models.DocumentList<Models.Document & IUser> = await databases.listDocuments(
+    const currentUser: Models.DocumentList<IUserDocument> = await databases.listDocuments(
       databaseId,
       usersCollectionId,
       [Query.equal('accountId', currentAccount.$id)],
@@ -199,6 +199,64 @@ const getRecentPosts = async () => {
 }
 
 
+const likePost = async (postId: string, likesArray: string[]) => {
+  try {
+    const { databaseId, postsCollectionId } = appwriteConfig
+    const updatedPost = await databases.updateDocument(
+      databaseId,
+      postsCollectionId,
+      postId,
+      {
+        likes: likesArray,
+      }
+    )
+    if (!updatedPost) throw Error
+    return updatedPost
+  }
+  catch (e) {
+    console.error(e)
+  }
+}
+
+
+const savePost = async (postId: string, userId: string) => {
+  try {
+    const { databaseId, savesCollectionId } = appwriteConfig
+    const updatedPost = await databases.createDocument(
+      databaseId,
+      savesCollectionId,
+      ID.unique(),
+      {
+        user: userId,
+        post: postId,
+      }
+    )
+    if (!updatedPost) throw Error
+    return updatedPost
+  }
+  catch (e) {
+    console.error(e)
+  }
+}
+
+
+const deleteSavedPost = async (savedRecordId: string) => {
+  try {
+    const { databaseId, savesCollectionId } = appwriteConfig
+    const deletedSavedPost = await databases.deleteDocument(
+      databaseId,
+      savesCollectionId,
+      savedRecordId,
+    )
+    if (!deletedSavedPost) throw Error
+    return { status: 'ok' }
+  }
+  catch (e) {
+    console.error(e)
+  }
+}
+
+
 export {
   createUserAccount,
   getCurrentUser,
@@ -206,4 +264,7 @@ export {
   logoutAccount,
   createPost,
   getRecentPosts,
+  likePost,
+  savePost,
+  deleteSavedPost,
 }

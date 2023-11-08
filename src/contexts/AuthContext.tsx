@@ -2,7 +2,7 @@ import {
   useState, useEffect, useContext, createContext, FC, PropsWithChildren
 } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { IUser } from '@/types/user'
+import { IUser, IUserDocument } from '@/types/user'
 import { IAuthContext } from '@/types/context'
 import { getCurrentUser } from '@/services/api'
 import { cookieFallBack } from '@/services/localStorage'
@@ -31,7 +31,7 @@ const useAuthContext = () => useContext(AuthContext)
 
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<IUser>(initUser)
-  const [isLoading, setIsLoading] = useState<IAuthContext['isLoading']>(false)
+  const [isLoading, setIsLoading] = useState<IAuthContext['isLoading']>(true)
   const [isAuthenticated, setIsAuthenticated] = useState<IAuthContext['isAuthenticated']>(false)
 
   const navigate = useNavigate()
@@ -40,7 +40,7 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       const currentUser = await getCurrentUser()
       if (!currentUser) return false
-      setUser({ ...currentUser })
+      setUser({ ...currentUser, id: currentUser.$id })
       setIsAuthenticated(true)
       return true      
     }
@@ -63,14 +63,13 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   useEffect(() => {
-    // cookieFallBack.isEmpty
     if (cookieFallBack.isEmpty) return navigate('/login')
     checkAuthUser()
   }, [])
 
   return (
     <AuthContext.Provider value={provider}>
-      {children}
+      {!isLoading && children}
     </AuthContext.Provider>
   )
 }

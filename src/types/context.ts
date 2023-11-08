@@ -1,5 +1,5 @@
 import React from 'react'
-import { IUser } from './user'
+import { IUser, IUserDocument } from './user'
 
 export interface IAuthContext {
   user: IUser
