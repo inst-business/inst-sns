@@ -17,7 +17,7 @@ const Login = ({}) => {
 
   const navigate = useNavigate()
   const { toast } = useToast()
-  const { checkAuthUser, isLoading: isUserLoading } = useAuthContext()
+  const { checkAuthUser, isUserLoading } = useAuthContext()
 
   const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLoginAccount()
 
@@ -81,7 +81,7 @@ const Login = ({}) => {
             )}
           />
           <Button type={'submit'} className={'shad-button_primary'}>
-            {isUserLoading ? (
+            {isLoggingIn ? (
               <div className={'flex-center gap-2'}>
                 <Loader />
               </div>

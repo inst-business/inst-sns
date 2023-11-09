@@ -6,6 +6,7 @@ import { IPostDocument } from '@/types/post'
 import _Date from '@/utils/date'
 import { useAuthContext } from '@/contexts/AuthContext'
 import PostStats from './PostStats'
+import PostCardLoading from './PostCard.Loading'
 
 interface IPostCardProps {
   post: IPostDocument
@@ -13,9 +14,11 @@ interface IPostCardProps {
 
 const PostCard: FC<IPostCardProps> = ({ post }) => {
 
-  const { user } = useAuthContext()
+  const { user, isUserLoading } = useAuthContext()
 
   if (!post.creator) return
+
+  if (isUserLoading) return <PostCardLoading />
 
   return (
     <div className={'post-card'}>

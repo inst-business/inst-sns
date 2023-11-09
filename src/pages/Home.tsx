@@ -1,5 +1,6 @@
 import Loader from '@/components/shared/Loader'
 import PostCard from '@/components/shared/PostCard'
+import PostCardLoading from '@/components/shared/PostCard/PostCard.Loading'
 import { useGetRecentPosts } from '@/hooks/queriesAndMutations'
 import { IPostDocument } from '@/types/post'
 

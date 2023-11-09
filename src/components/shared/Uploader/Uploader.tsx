@@ -8,7 +8,7 @@ interface IUploaderProps {
   mediaUrl: string
 }
 
-const Uploader: FC<IUploaderProps> = ({ fieldChange, mediaUrl }) => {
+const Uploader: FC<IUploaderProps> = ({ fieldChange }) => {
 
   const [files, setFiles] = useState<File[]>([])
   const [fileUrl, setFileUrl] = useState('')

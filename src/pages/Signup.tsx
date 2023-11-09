@@ -17,7 +17,7 @@ const Signup = ({}) => {
 
   const navigate = useNavigate()
   const { toast } = useToast()
-  const { checkAuthUser, isLoading: isUserLoading } = useAuthContext()
+  const { checkAuthUser, isUserLoading } = useAuthContext()
 
   const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount()
   const { mutateAsync: logInAccount, isPending: isLoggingIn } = useLoginAccount()

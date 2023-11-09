@@ -6,15 +6,15 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { SignupValidation } from '@/lib/validation/auth'
+import { signupValidation } from '@/lib/validation/auth'
 import Loader from '@/components/shared/Loader'
 
 const FormAuth = () => {
 
   const isLoading = false
 
-  const form = useForm<z.infer<typeof SignupValidation>>({
-    resolver: zodResolver(SignupValidation),
+  const form = useForm<z.infer<typeof signupValidation>>({
+    resolver: zodResolver(signupValidation),
     defaultValues: {
       name: '',
       username: '',
@@ -23,7 +23,7 @@ const FormAuth = () => {
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof SignupValidation>) => {
+  const handleSubmit = (values: z.infer<typeof signupValidation>) => {
     console.log(values)
   }
 

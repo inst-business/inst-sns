@@ -3,7 +3,7 @@ import { IUser, IUserDocument } from './user'
 
 export interface IAuthContext {
   user: IUser
-  isLoading: boolean
+  isUserLoading: boolean
   isAuthenticated: boolean
   setUser: React.Dispatch<React.SetStateAction<IUser>>
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>

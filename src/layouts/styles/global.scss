@@ -152,6 +152,18 @@
     @apply flex justify-start items-center;
   }
 
+  .absolute-center {
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  }
+
+  .absolute-center-y {
+    @apply absolute top-1/2 transform -translate-y-1/2;
+  }
+
+  .absolute-center-x {
+    @apply absolute left-1/2 transform -translate-x-1/2;
+  }
+
   .custom-scrollbar::-webkit-scrollbar {
     width: 3px;
     height: 3px;
