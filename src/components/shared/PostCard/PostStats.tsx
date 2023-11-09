@@ -1,4 +1,5 @@
-import { FC, MouseEvent, useState, useEffect } from 'react'
+import { FC, useState, useEffect, MouseEvent, memo } from 'react'
+import clsx from 'clsx'
 import { Models } from 'appwrite'
 import { useLikePost, useSavePost, useDeleteSavedPost, useGetCurrentUser } from '@/hooks/queriesAndMutations'
 import { IPostDocument } from '@/types/post'
@@ -15,7 +16,7 @@ const PostStats: FC<IPostStatsProps> = ({ post, userId }) => {
   const [likes, setLikes] = useState(() => post.likes.map((user: Models.Document) => user.$id))
   const [isSaved, setIsSaved] = useState(false)
 
-  const { mutate: likePost } = useLikePost()
+  const { mutate: likePost, isPending: isLikingPost } = useLikePost()
   const { mutate: savePost, isPending: isSavingPost } = useSavePost()
   const { mutate: deleteSavedPost, isPending: isDeletingSavedPost } = useDeleteSavedPost()
   const { data: currentUser } = useGetCurrentUser()
@@ -53,11 +54,6 @@ const PostStats: FC<IPostStatsProps> = ({ post, userId }) => {
     setIsSaved(!!savedPostRecord)
   }, [ currentUser ])
 
-  useEffect(() => {
-    console.log(likes, userId)
-    console.log(likes.includes(userId))
-  }, [])
-
   return (
     <div className={'flex justify-between items-center z-20'}>
       <div className={'flex gap-2 mr-5'}>
@@ -67,7 +63,11 @@ const PostStats: FC<IPostStatsProps> = ({ post, userId }) => {
           }
           width={20}
           height={20}
-          className={'cursor-pointer'}
+          className={
+            clsx('cursor-pointer', {
+              ['pending-state']: isLikingPost
+            })
+          }
           onClick={e => handleLikePost(e)}
         />
         <p className={'small-medium lg:base-medium'}>
@@ -76,22 +76,22 @@ const PostStats: FC<IPostStatsProps> = ({ post, userId }) => {
       </div>
 
       <div className={'flex gap-2'}>
-        {
-          isSavingPost || isDeletingSavedPost
-            ? <Loader />
-            : <Icon
-                asset={
-                  isSaved ? 'bookmark_filled' : 'bookmark'
-                }
-                width={20}
-                height={20}
-                className={'cursor-pointer'}
-                onClick={e => handleSavePost(e)}
-              />
-        }
+        <Icon
+          asset={
+            isSaved ? 'bookmark_filled' : 'bookmark'
+          }
+          width={20}
+          height={20}
+          className={
+            clsx('cursor-pointer', {
+              ['pending-state']: isSavingPost || isDeletingSavedPost
+            })
+          }
+          onClick={e => handleSavePost(e)}
+        />
       </div>
     </div>
   )
 }
 
-export default PostStats
+export default memo(PostStats)

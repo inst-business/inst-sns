@@ -8,10 +8,10 @@ interface IUploaderProps {
   mediaUrl: string
 }
 
-const Uploader: FC<IUploaderProps> = ({ fieldChange }) => {
+const Uploader: FC<IUploaderProps> = ({ fieldChange, mediaUrl }) => {
 
   const [files, setFiles] = useState<File[]>([])
-  const [fileUrl, setFileUrl] = useState('')
+  const [fileUrl, setFileUrl] = useState(mediaUrl)
 
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles)

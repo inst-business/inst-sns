@@ -114,7 +114,11 @@ const Signup = ({}) => {
               </FormItem>
             )}
           />
-          <Button type={'submit'} className={'shad-button_primary'}>
+          <Button
+            type={'submit'}
+            className={'shad-button_primary'}
+            disabled={isCreatingAccount}
+          >
             {isCreatingAccount ? (
               <div className={'flex-center gap-2'}>
                 <Loader />

@@ -63,7 +63,6 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   useEffect(() => {
-    console.log(user)
     if (cookieFallBack.isEmpty) return navigate('/login')
     checkAuthUser()
   }, [])

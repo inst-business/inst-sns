@@ -1,8 +1,7 @@
-import React from 'react'
 import Icon from '@/components/shared/Icon'
 import Form from '@/components/forms'
 
-const PostCreate = () => {
+const PostCreate = ({}) => {
   return (
     <div className={'flex flex-1'}>
       <div className={'common-container'}>

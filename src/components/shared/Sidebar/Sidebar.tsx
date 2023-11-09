@@ -11,14 +11,14 @@ const UserPreload = () => (
   <div className={'animate-pulse flex gap-3 items-center'}>
     <div className={'rounded-full bg-slate-800 h-14 w-14'}></div>
     <div className={'flex flex-col'}>
-      <p className={'body-bold relative'}>
+      <div className={'body-bold relative'}>
         <span className={'invisible'}>Placeholder</span>
         <div className={'bg-slate-800 rounded absolute-center-y h-1/3 w-24'}></div>
-      </p>
-      <p className={'small-regular text-light-3 relative'}>
+      </div>
+      <div className={'small-regular text-light-3 relative'}>
         <span className={'invisible'}>@placeholder</span>
         <div className={'bg-slate-800 rounded absolute-center-y h-1/3 w-16'}></div>
-      </p>
+      </div>
     </div>
   </div>
 )

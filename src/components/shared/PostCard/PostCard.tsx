@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import Icon from '@/components/shared/Icon'
@@ -7,6 +7,7 @@ import _Date from '@/utils/date'
 import { useAuthContext } from '@/contexts/AuthContext'
 import PostStats from './PostStats'
 import PostCardLoading from './PostCard.Loading'
+import { useGetCurrentUser } from '@/hooks/queriesAndMutations'
 
 interface IPostCardProps {
   post: IPostDocument
@@ -15,13 +16,18 @@ interface IPostCardProps {
 const PostCard: FC<IPostCardProps> = ({ post }) => {
 
   const { user, isUserLoading } = useAuthContext()
+  const { isPending: isCurrentUserLoading } = useGetCurrentUser()
+
+  // useEffect(() => {
+  //   console.log(post.$id)
+  // })
 
   if (!post.creator) return
 
-  if (isUserLoading) return <PostCardLoading />
-
+  if (isUserLoading || isCurrentUserLoading) return <PostCardLoading />
+  
   return (
-    <div className={'post-card'}>
+    <li className={'post-card'}>
       <div className={'flex-between'}>
         <div className={'flex items-center gap-3'}>
           <Link to={`/profile/${post.creator.$id}`}>
@@ -101,8 +107,8 @@ const PostCard: FC<IPostCardProps> = ({ post }) => {
       </Link>
 
       <PostStats post={post} userId={user.id} />
-    </div>
+    </li>
   )
 }
 
-export default PostCard
+export default memo(PostCard)

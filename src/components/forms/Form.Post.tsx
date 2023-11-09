@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Models } from 'appwrite'
 import { useAuthContext } from '@/contexts/AuthContext'
+import { postValidation } from '@/lib/validation/post'
+import { useCreatePost, useUpdatePost } from '@/hooks/queriesAndMutations'
 import { useToast } from '@/components/ui/use-toast'
 import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage
@@ -13,16 +15,17 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import Uploader from '@/components/shared/Uploader'
-import { postValidation } from '@/lib/validation/post'
-import { useCreatePost } from '@/hooks/queriesAndMutations'
+import Loader from '@/components//shared/Loader'
 
 interface IFormPostProps {
   post?: Models.Document
+  action?: 'create' | 'update'
 }
 
-const FormPost: FC<IFormPostProps> = ({ post }) => {
+const FormPost: FC<IFormPostProps> = ({ post, action }) => {
 
   const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost()
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } = useUpdatePost()
   const { user } = useAuthContext()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -38,17 +41,34 @@ const FormPost: FC<IFormPostProps> = ({ post }) => {
   })
 
   const handleSubmit = async (data: z.infer<typeof postValidation>) => {
+    if (post && action === 'update') {
+      const updatedPost = await updatePost({
+        ...data,
+        postId: post.$id,
+        imageId: post?.imageId,
+        imageUrl: post?.imageUrl,
+      })
+      if (!updatedPost) {
+        toast({
+          title: 'Failed to update, please try again.'
+        })
+      }
+      return navigate(`/posts/${post.$id}`)
+    }
+
     const newPost = await createPost({
       ...data,
       userId: user.id
     })
-
     if (!newPost) toast({
       title: 'Failed to create, please try again.'
     })
-
     navigate('/')
   }
+
+  // useEffect(() => {
+  //   console.log(post?.imageUrl)
+  // }, [])
 
   return (
     <Form {...form}>
@@ -126,8 +146,27 @@ const FormPost: FC<IFormPostProps> = ({ post }) => {
           )}
         />
         <div className={'flex gap-4 items-center justify-end'}>
-          <Button type={'button'} className={'shad-button_dark_4'}>Cancel</Button>
-          <Button type={'submit'} className={'shad-button_primary whitespace-nowrap'}>Submit</Button>
+          <Button
+            type={'button'}
+            className={'shad-button_dark_4'}
+          >
+            Cancel
+          </Button>
+          <Button
+            type={'submit'}
+            className={'shad-button_primary whitespace-nowrap'}
+            disabled={isLoadingCreate || isLoadingUpdate}
+          >
+            {
+              isLoadingCreate || isLoadingUpdate
+                ? (
+                  <div className={'flex-center gap-2'}>
+                    <Loader />
+                  </div>
+                )
+                : `${action === 'update' ? 'Update' : 'Create'} Post`
+            }
+          </Button>
         </div>
       </form>
     </Form>
@@ -135,3 +174,7 @@ const FormPost: FC<IFormPostProps> = ({ post }) => {
 }
 
 export default FormPost
+
+FormPost.defaultProps = {
+  action: 'create',
+}

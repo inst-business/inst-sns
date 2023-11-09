@@ -1,7 +1,7 @@
 import { ID, Models, Query } from 'appwrite'
 import { account, appwriteConfig, avatars, databases, storage } from '@/lib/server/config'
 import { IAccount, IUserDocument } from '@/types/user'
-import { INewPost } from '@/types/post'
+import { INewPost, IUpdatePost } from '@/types/post'
 
 
 const createUserAccount = async (user: IAccount) => {
@@ -146,7 +146,7 @@ const getFilePreview = (fileId: string) => {
   }
   catch (e) {
     console.error(e)
-    return e
+    // return e
   }
 }
 
@@ -156,7 +156,7 @@ const createPost = async (post: INewPost) => {
     if (!uploadedFile) throw Error
     const fileUrl = getFilePreview(uploadedFile.$id)
     if (!fileUrl) {
-      deleteFile(uploadedFile.$id)
+      await deleteFile(uploadedFile.$id)
       throw Error
     }
     const tags = post.tags?.replace(/ /g, '').split(',') || []
@@ -175,7 +175,7 @@ const createPost = async (post: INewPost) => {
       }
     )
     if (!newPost) {
-      deleteFile(uploadedFile.$id)
+      await deleteFile(uploadedFile.$id)
       throw Error
     }
     return newPost
@@ -186,6 +186,65 @@ const createPost = async (post: INewPost) => {
   }
 }
 
+const updatePost = async (post: IUpdatePost) => {
+  const hasFileToUpdate = post.files.length > 0
+  try {
+    let image = {
+      imageUrl: post.imageUrl,
+      imageId: post.imageId,
+    }
+    if (hasFileToUpdate) {
+      // console.log('hasFileToUpdate', post.files[0])
+      const uploadedFile = await uploadFile(post.files[0])
+      if (!uploadedFile) throw Error
+      const fileUrl = getFilePreview(uploadedFile.$id)
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id)
+        throw Error
+      }
+      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id }
+    }
+    const tags = post.tags?.replace(/ /g, '').split(',') || []
+    const { databaseId, postsCollectionId } = appwriteConfig
+    const updatedPost = await databases.updateDocument(
+      databaseId,
+      postsCollectionId,
+      post.postId,
+      {
+        caption: post.caption,
+        imageUrl: image.imageUrl,
+        imageId: image.imageId,
+        location: post.location,
+        tags,
+      }
+    )
+    if (!updatedPost) {
+      await deleteFile(post.imageId)
+      throw Error
+    }
+    return updatedPost
+  }
+  catch (e) {
+    console.error(e)
+    // return e
+  }
+}
+
+const deletePost = async (postId: string, imageId: string) => {
+  if (!postId || !imageId) throw Error
+  try {
+    const { databaseId, postsCollectionId } = appwriteConfig
+    await databases.deleteDocument(
+      databaseId,
+      postsCollectionId,
+      postId,
+    )
+    return { status: 'ok' }
+  }
+  catch (e) {
+    console.error(e)
+  }
+}
 
 const getRecentPosts = async () => {
   const { databaseId, postsCollectionId } = appwriteConfig
@@ -196,6 +255,22 @@ const getRecentPosts = async () => {
   )
   if (!posts) throw Error
   return posts
+}
+
+
+const getPostById = async (postId: string) => {
+  try {
+    const { databaseId, postsCollectionId } = appwriteConfig
+    const post = await databases.getDocument(
+      databaseId,
+      postsCollectionId,
+      postId
+    )
+    return post
+  }
+  catch (e) {
+    console.error(e)
+  }
 }
 
 
@@ -263,7 +338,10 @@ export {
   loginAccount,
   logoutAccount,
   createPost,
+  updatePost,
+  deletePost,
   getRecentPosts,
+  getPostById,
   likePost,
   savePost,
   deleteSavedPost,

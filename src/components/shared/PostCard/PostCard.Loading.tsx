@@ -6,10 +6,10 @@ const PostCardLoading = () => {
         <div className={'flex items-center gap-3'}>
           <div className={'rounded-full bg-slate-800 h-14 w-14'}></div>
           <div className={'flex flex-col'}>
-            <p className={'base-medium lg:body-bold relative'}>
+            <div className={'base-medium lg:body-bold relative'}>
               <span className={'invisible'}>Creator</span>
               <div className={'bg-slate-800 rounded absolute-center-y h-1/3 w-24'}></div>
-            </p>
+            </div>
             <div className={'mt-2 space-y-3'}>
               <div className={'grid grid-cols-4 gap-3 w-48'}>
                 <div className={'h-2 bg-slate-800 rounded col-span-3'}></div>

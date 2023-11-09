@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Loader from '@/components/shared/Loader'
 import PostCard from '@/components/shared/PostCard'
 import PostCardLoading from '@/components/shared/PostCard/PostCard.Loading'
@@ -8,6 +9,10 @@ const Home = ({}) => {
 
   const { data: posts, isPending: isPostsLoading, isError: isFailedFetching } = useGetRecentPosts()
 
+  // useEffect(() => {
+  //   console.log('home')
+  // }, [])
+
   return (
     <div className={'flex flex-1'}>
       <div className={'home-container'}>
@@ -15,11 +20,8 @@ const Home = ({}) => {
           <h2 className={'h3-bold md:h2-bold text-left w-full'}>Home feed</h2>
           {
             isPostsLoading && !posts
-              ? (
-                <Loader />
-              )
-              : (
-                <ul className={'flex flex-col flex-1 gap-9 w-full'}>
+              ? <Loader />
+              : <ul className={'flex flex-col flex-1 gap-9 w-full'}>
                   {posts?.documents.map(post => (
                     <PostCard
                       key={post.$id}
@@ -27,7 +29,6 @@ const Home = ({}) => {
                     />
                   ))}
                 </ul>
-              )
           }
         </div>
       </div>
