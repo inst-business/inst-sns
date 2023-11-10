@@ -1,7 +1,7 @@
 import { ID, Models, Query } from 'appwrite'
 import { account, appwriteConfig, avatars, databases, storage } from '@/lib/server/config'
 import { IAccount, IUserDocument } from '@/types/user'
-import { INewPost, IUpdatePost } from '@/types/post'
+import { INewPost, IPostDocument, IUpdatePost } from '@/types/post'
 
 
 const createUserAccount = async (user: IAccount) => {
@@ -257,6 +257,44 @@ const getRecentPosts = async () => {
   return posts
 }
 
+const getInfinitePosts = async ({ pageParam }: { pageParam: number }) => {
+  const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(10)]
+  if (pageParam) {
+    queries.push(Query.cursorAfter(pageParam.toString()))
+  }
+
+  try {
+    const { databaseId, postsCollectionId } = appwriteConfig
+    const posts = await databases.listDocuments(
+      databaseId,
+      postsCollectionId,
+      queries,
+    )
+    if (!posts) throw Error
+    return posts
+  }
+  catch (e) {
+    
+  }
+}
+
+const searchPosts = async (searchTerm: string) => {
+  try {
+    const { databaseId, postsCollectionId } = appwriteConfig
+    const posts = await databases.listDocuments(
+      databaseId,
+      postsCollectionId,
+      [Query.search('caption', searchTerm)],
+    )
+    if (!posts) throw Error
+    return posts as Models.DocumentList<IPostDocument>
+  }
+  catch (e) {
+    
+  }
+}
+
+
 
 const getPostById = async (postId: string) => {
   try {
@@ -266,7 +304,7 @@ const getPostById = async (postId: string) => {
       postsCollectionId,
       postId
     )
-    return post
+    return post as IPostDocument
   }
   catch (e) {
     console.error(e)
@@ -341,6 +379,8 @@ export {
   updatePost,
   deletePost,
   getRecentPosts,
+  getInfinitePosts,
+  searchPosts,
   getPostById,
   likePost,
   savePost,

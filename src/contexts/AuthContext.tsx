@@ -66,6 +66,8 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     if (cookieFallBack.isEmpty) return navigate('/login')
     checkAuthUser()
   }, [])
+  
+  console.log(user)
 
   return (
     <AuthContext.Provider value={provider}>
