@@ -5,7 +5,7 @@ import {
   createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, likePost, loginAccount, logoutAccount, savePost, searchPosts, updatePost
 } from '@/services/api'
 import { IAccount, IUser } from '@/types/user'
-import { INewPost, IUpdatePost } from '@/types/post'
+import { INewPost, IPostDocument, IUpdatePost } from '@/types/post'
 import { QUERY_KEYS } from '@/types/query'
 
 const useCreateUserAccount = () => {
@@ -56,11 +56,12 @@ const useGetPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
     queryFn: getInfinitePosts,
+    // @@ts-expect-error
     getNextPageParam: (lastPage) => {
-      if (lastPage && lastPage.documents.length === 0) return null
-      const lastId = lastPage?.documents[lastPage.documents.length - 1].$id
-      return lastId
-    }
+      if (!lastPage || lastPage.documents.length === 0) return null
+      return lastPage.documents[lastPage.documents.length - 1].$id
+    },
+    initialPageParam: undefined,
   })
 }
 

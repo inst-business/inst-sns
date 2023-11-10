@@ -257,7 +257,7 @@ const getRecentPosts = async () => {
   return posts
 }
 
-const getInfinitePosts = async ({ pageParam }: { pageParam: number }) => {
+const getInfinitePosts = async ({ pageParam }: { pageParam?: string }) => {
   const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(10)]
   if (pageParam) {
     queries.push(Query.cursorAfter(pageParam.toString()))
@@ -271,7 +271,7 @@ const getInfinitePosts = async ({ pageParam }: { pageParam: number }) => {
       queries,
     )
     if (!posts) throw Error
-    return posts
+    return posts as Models.DocumentList<IPostDocument>
   }
   catch (e) {
     
