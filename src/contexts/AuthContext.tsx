@@ -67,8 +67,6 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     checkAuthUser()
   }, [])
   
-  console.log(user)
-
   return (
     <AuthContext.Provider value={provider}>
       {children}

@@ -3,6 +3,7 @@ import { IPostDocument } from '@/types/post'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Link } from 'react-router-dom'
 import PostStats from '@/components/shared/PostCard/PostStats'
+import Img from '@/components/shared/Img'
 
 interface IGridPostListProps {
   posts: IPostDocument[]
@@ -29,6 +30,7 @@ const GridPostList: FC<IGridPostListProps> = ({ posts, showUser = true, showStat
               <img
                 src={post.imageUrl.toString()}
                 alt={post.caption}
+                loading={'lazy'}
                 className={'w-full h-full object-cover'}
               />
             </Link>

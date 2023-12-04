@@ -33,7 +33,12 @@ const Header = ({}) => {
           <Link to={`/profile/${user.id}`} className={'flex-center gap-3'}>
             {
               user.imageUrl != null
-                ? <img src={user.imageUrl} alt={user.username} className={'h-8 w-8 rounded-full'} />
+                ? <img
+                    src={user.imageUrl}
+                    alt={user.username}
+                    loading={'lazy'}
+                    className={'h-8 w-8 rounded-full'}
+                  />
                 : <Icon asset={'circle-user'} />
             }
           </Link>

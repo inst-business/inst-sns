@@ -47,7 +47,12 @@ const SideBar = ({}) => {
             : <Link to={`/profile/${user.id}`} className={'flex gap-3 items-center'}>
               {
                 user.imageUrl != null
-                  ? <img src={user.imageUrl} alt={user.username} className={'h-14 w-14 rounded-full'} />
+                  ? <img
+                      src={user.imageUrl}
+                      alt={user.username}
+                      loading={'lazy'}
+                      className={'h-14 w-14 rounded-full'}
+                    />
                   : <Icon asset={'circle-user'} width={32} height={32} />
               }
               <div className={'flex flex-col'}>

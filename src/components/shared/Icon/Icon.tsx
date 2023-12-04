@@ -36,7 +36,7 @@ const Icon: FC<IIconProps & ButtonHTMLAttributes<HTMLButtonElement>> = ({
   const dimension = (edge: number | string) => typeof edge === 'number' ? `${edge}px` : edge as string
   return (
     <span
-      className={clsx('bg-gray-500 hover:!bg-gray-500', styles.Icon, className)}
+      className={clsx('bg-gray-500', styles.Icon, className)}
       style={{
         maskImage,
         WebkitMaskImage: maskImage,

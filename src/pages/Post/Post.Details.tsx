@@ -9,6 +9,7 @@ import NotFound from '@/pages/NotFound'
 import Icon from '@/components/shared/Icon'
 import { Button } from '@/components/ui/button'
 import PostStats from '@/components/shared/PostCard/PostStats'
+import Img from '@/components/shared/Img'
 
 const PostDetails = ({}) => {
   
@@ -26,11 +27,19 @@ const PostDetails = ({}) => {
   return (
     <div className={'post_details-container'}>
       <div className={'post_details-card'}>
-        <img
+        <div className={'post_details-img'}>
+          <Img
+            src={post.imageUrl}
+            alt={post.caption}
+            className={''}
+          />
+        </div>
+        {/* <img
           src={post.imageUrl.toString()}
           alt={post.caption}
+          loading={'lazy'}
           className={'post_details-img'}
-        />
+        /> */}
         <div className={'post_details-info'}>
           <div className={'flex-between w-full'}>
             <Link
@@ -40,6 +49,7 @@ const PostDetails = ({}) => {
               <img
                 src={post.creator.imageUrl || '/assets/circle-user.svg'}
                 alt={post.creator.username}
+                loading={'lazy'}
                 className={'w-8 h-8 lg:w-12 lg:h-12 rounded-full'}
               />
               <div className={'flex flex-col'}>

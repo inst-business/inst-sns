@@ -43,6 +43,7 @@ const Uploader: FC<IUploaderProps> = ({ fieldChange, mediaUrl }) => {
                 <img
                   src={fileUrl}
                   alt={'uploaded photo'}
+                  loading={'lazy'}
                   className={'uploader-img'}
                 />
               </div>

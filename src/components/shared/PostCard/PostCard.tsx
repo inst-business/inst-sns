@@ -34,6 +34,7 @@ const PostCard: FC<IPostCardProps> = ({ post }) => {
             <img
               src={post?.creator?.imageUrl || '/assets/circle-user.svg'}
               alt={post.creator.username}
+              loading={'lazy'}
               className={'w-12 lg:h-12 rounded-full'}
             />
           </Link>
@@ -87,6 +88,7 @@ const PostCard: FC<IPostCardProps> = ({ post }) => {
               <img
                 src={post.imageUrl.toString() || '/assets/circle-user.svg'}
                 alt={post.caption}
+                loading={'lazy'}
                 className={'post-card_img'}
               />
             )
