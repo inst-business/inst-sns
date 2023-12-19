@@ -271,7 +271,7 @@ const getInfinitePosts = async ({ pageParam }: { pageParam?: string }) => {
       queries,
     )
     if (!posts) throw Error
-    return posts as Models.DocumentList<IPostDocument>
+    return posts as any
   }
   catch (e) {
     
